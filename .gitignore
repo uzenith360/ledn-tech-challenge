@@ -1,1 +1,5 @@
-instructions
+# instructions/
+.env
+dist/
+node_modules/
+package-lock.json
