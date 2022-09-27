@@ -4,7 +4,7 @@ import AccountCoreService from "./account.core.service";
 import Account from "./interfaces/account";
 
 export default class AccountService {
-    static async getAccount(userEmail: string): Promise<Account> {
+    static async getAccountByEmail(userEmail: string): Promise<Account> {
         const account: Account | null = await AccountCoreService.get({ userEmail });
 
         if (!account) {

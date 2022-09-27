@@ -9,7 +9,6 @@ const AccountSchema: Schema<Account<Schema.Types.Decimal128>>
                 type: String,
                 required: true,
                 maxLength: 100,
-                // index: true, 
                 unique: true
             },
             balance: {
@@ -21,6 +20,7 @@ const AccountSchema: Schema<Account<Schema.Types.Decimal128>>
             },
         },
         {
+            id: false,
             timestamps: true,
             toJSON: { getters: true },
         },

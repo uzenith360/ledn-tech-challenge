@@ -8,6 +8,7 @@ export default async <T>(model: Model<T>, seedingFilePath: string): Promise<void
 
     do {
         /**
+         * @fyi
          * This would hang if data being fed in doesnt match the schema
          * Look at for things like required fields that arent in seed data
          */

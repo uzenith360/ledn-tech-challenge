@@ -18,6 +18,10 @@ export default class DBConnection {
         return this.connection;
     }
 
+    public async closeConnection(): Promise<void> {
+        return this.connection?.close();
+    }
+
     private async connect(): Promise<Connection> {
         const { connection } = await connect(
             this.mongoUrl,

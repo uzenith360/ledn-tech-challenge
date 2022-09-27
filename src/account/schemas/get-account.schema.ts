@@ -4,7 +4,7 @@ const getAccountSchema: Schema = {
   userEmail: {
     // The location of the field, can be one or more of body, cookies, headers, params or query.
     // If omitted, all request locations will be checked
-    in: ['body'],
+    in: ['query'],
     exists: {
       errorMessage: 'email is required',
       options: [

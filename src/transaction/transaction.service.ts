@@ -1,14 +1,13 @@
 import transactionType from './enums/transaction-type.enum';
 import createTransaction from './helpers/create-transaction';
-import Transaction from "./interfaces/transaction";
-import CreateTransaction from './types/transaction-create-data.type';
+import CreateTransactionData from './types/create-transaction-data.type';
 
 export default class TransactionService {
-    static async createSendTransaction(transaction: CreateTransaction): Promise<void> {
+    static async createSendTransaction(transaction: CreateTransactionData): Promise<void> {
         return createTransaction(transaction, transactionType.send);
     }
 
-    static async createReceiveTransaction(transaction: CreateTransaction): Promise<void> {
+    static async createReceiveTransaction(transaction: CreateTransactionData): Promise<void> {
         return createTransaction(transaction, transactionType.receive);
     }
 }

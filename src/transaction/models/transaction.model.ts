@@ -34,7 +34,8 @@ const TransactionSchema: Schema<Transaction<Schema.Types.Decimal128>>
             }
         },
         {
-            toJSON: { getters: true/*, flattenMaps: true*/ },
+            id: false,
+            toJSON: { getters: true },
         },
     );
 

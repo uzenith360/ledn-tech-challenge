@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import passport from 'passport';
 import reqValidationMiddleware from '../common/middlewares/req-validation.middleware';
 import sendTransactionSchema from './schemas/send-transaction.schema';
 
@@ -12,7 +13,7 @@ const transactionRouter: Router = express.Router();
 // POST create send transaction.
 transactionRouter.post(
     '/send',
-    // passport.authenticate('headerapikey', { session: false/*, failureRedirect: '/api/unauthorized'*/ }),
+    passport.authenticate('headerapikey', { session: false }),
     reqValidationMiddleware(sendTransactionSchema),
     transactionController.createSendTransaction,
 );
@@ -20,7 +21,7 @@ transactionRouter.post(
 // POST create receive transaction.
 transactionRouter.post(
     '/receive',
-    // passport.authenticate('headerapikey', { session: false/*, failureRedirect: '/api/unauthorized'*/ }),
+    passport.authenticate('headerapikey', { session: false }),
     reqValidationMiddleware(sendTransactionSchema),
     transactionController.createReceiveTransaction,
 );

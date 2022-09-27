@@ -1,33 +1,6 @@
 import { Schema } from "express-validator";
 
 const receiveTransactionSchema: Schema = {
-  // _accountId: {
-  //   // The location of the field, can be one or more of body, cookies, headers, params or query.
-  //   // If omitted, all request locations will be checked
-  //   in: ['body'],
-  //   exists: {
-  //     errorMessage: 'account id is required',
-  //     options: [
-  //       {
-  //         checkFalsy: true,
-  //         checkNull: true,
-  //       }
-  //     ]
-  //   },
-  //   ltrim: {
-  //     options: [' '],
-  //   },
-  //   rtrim: {
-  //     // Options as an array
-  //     options: [' '],
-  //   },
-  //   isMongoId:{
-  //     errorMessage: 'account id must be a mongodb object ID',
-  //   },
-  //   isString: {
-  //     errorMessage: 'account id must be a string',
-  //   },
-  // },
   amount: {
     // The location of the field, can be one or more of body, cookies, headers, params or query.
     // If omitted, all request locations will be checked

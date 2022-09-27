@@ -8,7 +8,7 @@ import transactionType from '../enums/transaction-type.enum';
 import Transaction from "../interfaces/transaction";
 import TransactionDocument from '../models/transaction.document';
 import TransactionCoreService from '../transaction.core.service';
-import TransactionCreateData from '../types/transaction-create-data.type';
+import TransactionCreateData from '../types/create-transaction-data.type';
 
 export default async (transactionCreateData: TransactionCreateData, type: transactionType)
     : Promise<void> => new Promise(
@@ -45,16 +45,17 @@ export default async (transactionCreateData: TransactionCreateData, type: transa
                             : -1
                     );
 
-                const isUpdated = await AccountCoreService.updateOne(
+                const { balance = null } = await AccountCoreService.incrementBalance(
                     { _id: account._id },
-                    { $inc: { balance: amount } },
+                    amount,
                     session,
+                    true,
                 );
 
-                if (!isUpdated) {
+                if (balance === account.balance) {
                     throw new HttpException(
-                        httpStatusCode.fail,
-                        'Account balance not updated',
+                        httpStatusCode.bad,
+                        'Insufficient balance 🤦‍♂️',
                     );
                 }
 
