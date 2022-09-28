@@ -32,6 +32,8 @@ if (
         'MONGODB_CONNECTION_STRING',
     ].every((envVar: string) => !!env[envVar])
 ) {
+    console.error('Env configuration not found, be sure you renamed and used the .env-example file');
+    
     process.exit(1);
 }
 
@@ -97,6 +99,8 @@ const init = async () => {
             ],
         );
     } catch (e) {
+        console.error('DB connection failed');
+
         process.exit(1);
     }
 

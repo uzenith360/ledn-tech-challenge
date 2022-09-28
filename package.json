@@ -5,9 +5,8 @@
   "main": "dest/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "npm install typescript && tsc -p . && node ./dist",
-    "start": "npm install typescript && tsc -p . && node -r dotenv/config ./dist dotenv_config_path=./.env-prod",
-    "build": "npm install --only=dev && tsc",
+    "start": "npm run build && node -r dotenv/config ./dist/main.js dotenv_config_path=./.env",
+    "build": "tsc -p .",
     "dev": "ts-node-dev --respawn --pretty --transpile-only -r dotenv/config src/main.ts dotenv_config_path=./.env"
   },
   "repository": {
