@@ -18,10 +18,6 @@ const TransactionSchema: Schema<Transaction<Schema.Types.Decimal128>>
                 default: 0.0,
                 get: schemaGetAmount,
             },
-            account: {
-                type: Schema.Types.ObjectId,
-                ref: 'Account',
-            },
             type: {
                 type: String,
                 required: true,

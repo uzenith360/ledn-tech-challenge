@@ -42,7 +42,6 @@ export default class DBConnection {
         return connection;
     }
 
-
     public static getInstance(mongoUrl: string): DBConnection {
         if (!DBConnection._instance) {
             DBConnection._instance = new DBConnection(mongoUrl);
