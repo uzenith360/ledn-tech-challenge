@@ -10,7 +10,7 @@ export default class AccountService {
         if (!account) {
             throw new HttpException(
                 httpStatusCode.notFound,
-                `Account with email ${userEmail} is not found`,
+                `Account with email ${userEmail} doesnt exist`,
             );
         }
 

@@ -28,7 +28,6 @@ export const createSendTransaction = async (req: Request, res: Response) => {
                 .send({ success: false, message: 'Internal server error' });
         }
     }
-
 };
 
 export const createReceiveTransaction = async (req: Request, res: Response) => {
