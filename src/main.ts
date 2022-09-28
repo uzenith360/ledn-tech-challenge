@@ -2,7 +2,7 @@
  * Required External Modules
  */
 import express, { Express } from "express";
-import { Connection, Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 import { env } from 'process';
 import cors from "cors";
 import helmet from "helmet";
@@ -29,14 +29,16 @@ if (
     ![
         'PORT',
         'API_KEY',
+        'SEED_DATABASE',
         'MONGODB_CONNECTION_STRING',
     ].every((envVar: string) => !!env[envVar])
 ) {
     console.error('Env configuration not found, be sure you renamed and used the .env-example file');
-    
+
     process.exit(1);
 }
 
+const SEED_DATABASE: boolean = env.SEED_DATABASE === 'true';
 const PORT: number = parseInt(env.PORT as string, 10) || 8081;
 const MONGO_URL: string = env.MONGODB_CONNECTION_STRING as string;
 
@@ -81,23 +83,28 @@ const init = async () => {
     try {
         await DBConnection.getInstance(MONGO_URL).getConnection();
 
-        console.log('DB connected, seeding ...');
+        console.log('DB connected');
 
-        /// seed database 
-        await Promise.allSettled(
-            [
-                // transaction model
-                dbSeeder<Transaction<Schema.Types.Decimal128>>(
-                    TransactionModel,
-                    './instructions/transactions-api.json',
-                ),
-                // account model
-                dbSeeder<Account<Schema.Types.Decimal128>>(
-                    AccountModel,
-                    './instructions/accounts-api.json',
-                ),
-            ],
-        );
+        if (SEED_DATABASE) {
+            console.log('Seeding database...');
+            console.log(`You can turn this off via the 'SEED_DATABASE' env variable`);
+
+            /// seed database 
+            await Promise.allSettled(
+                [
+                    // transaction model
+                    dbSeeder<Transaction<Schema.Types.Decimal128>>(
+                        TransactionModel,
+                        './instructions/transactions-api.json',
+                    ),
+                    // account model
+                    dbSeeder<Account<Schema.Types.Decimal128>>(
+                        AccountModel,
+                        './instructions/accounts-api.json',
+                    ),
+                ],
+            );
+        }
     } catch (e) {
         console.error('DB connection failed');
 
