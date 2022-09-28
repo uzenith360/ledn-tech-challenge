@@ -11,6 +11,7 @@ const TransactionSchema: Schema<Transaction<Schema.Types.Decimal128>>
                 required: true,
                 maxLength: 100,
                 index: true,
+                lowercase: true,
             },
             amount: {
                 type: Schema.Types.Decimal128,

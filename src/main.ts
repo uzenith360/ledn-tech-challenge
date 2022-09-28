@@ -21,6 +21,7 @@ import AccountModel from "./account/models/account.model";
 import Account from "./account/interfaces/account";
 import Transaction from "./transaction/interfaces/transaction";
 import accountRouter from "./account/account.router";
+import trimAndLowercase from "./common/helpers/trim-and-lowercase";
 
 /**
 * App Variables
@@ -93,14 +94,16 @@ const init = async () => {
             await Promise.allSettled(
                 [
                     // transaction model
-                    dbSeeder<Transaction<Schema.Types.Decimal128>>(
+                    dbSeeder<Transaction<Schema.Types.Decimal128>, Transaction>(
                         TransactionModel,
                         './instructions/transactions-api.json',
+                        (transaction: Transaction)=>({...transaction, userEmail: trimAndLowercase(transaction.userEmail)}),
                     ),
                     // account model
-                    dbSeeder<Account<Schema.Types.Decimal128>>(
+                    dbSeeder<Account<Schema.Types.Decimal128>, Account>(
                         AccountModel,
                         './instructions/accounts-api.json',
+                        (account: Account)=>({...account, userEmail: trimAndLowercase(account.userEmail)}),
                     ),
                 ],
             );

@@ -54,7 +54,8 @@ const receiveTransactionSchema: Schema = {
     },
     isEmail: {
       errorMessage: 'user email should be a valid email',
-    }
+    },
+    toLowerCase:{},
   },
 }
 

@@ -1,10 +1,14 @@
 import { Model } from 'mongoose';
 import fileRead from './file-read';
 
-export default async <T>(model: Model<T>, seedingFilePath: string): Promise<void> => {
+export default async <T, X>(model: Model<T>, seedingFilePath: string, preprocessFn?: (_: X) => X): Promise<void> => {
     await model.deleteMany({});
 
-    let seedData: unknown[] = JSON.parse(await fileRead(seedingFilePath));
+    let seedData: X[] = JSON.parse(await fileRead(seedingFilePath));
+
+    if (!!preprocessFn) {
+        seedData = seedData.map(preprocessFn);
+    }
 
     do {
         /**

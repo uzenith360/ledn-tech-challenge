@@ -9,7 +9,8 @@ const AccountSchema: Schema<Account<Schema.Types.Decimal128>>
                 type: String,
                 required: true,
                 maxLength: 100,
-                unique: true
+                unique: true,
+                lowercase: true,
             },
             balance: {
                 type: Schema.Types.Decimal128,
