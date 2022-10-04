@@ -32,9 +32,21 @@ const TransactionSchema: Schema<Transaction<Schema.Types.Decimal128>>
         },
         {
             id: false,
-            toJSON: { getters: true },
+            toJSON: { getters: true, virtuals: true },
+            toObject: { virtuals: true },
         },
     );
+
+// Foreign keys definitions
+TransactionSchema.virtual(
+    'accountOwner',
+    {
+        ref: 'Account',
+        localField: 'userEmail',
+        foreignField: 'userEmail',
+        justOne: true // for many-to-1 relationships
+    },
+);
 
 const TransactionModel: Model<Transaction<Schema.Types.Decimal128>>
     = model<Transaction<Schema.Types.Decimal128>>('Transaction', TransactionSchema);
