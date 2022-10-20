@@ -1,8 +1,9 @@
-import { Schema, model, Model } from "mongoose";
+import { Schema, model } from "mongoose";
 import schemaGetAmount from "../../common/helpers/schema-get-amount";
-import Account from "../interfaces/account";
+import AccountDocument from "../interfaces/account-document.inteface";
+import AccountModel from "../interfaces/account-model.interface";
 
-const AccountSchema: Schema<Account<Schema.Types.Decimal128>>
+const AccountSchema: Schema<AccountDocument, AccountModel>
     = new Schema(
         {
             userEmail: {
@@ -27,6 +28,4 @@ const AccountSchema: Schema<Account<Schema.Types.Decimal128>>
         },
     );
 
-const AccountModel: Model<Account<Schema.Types.Decimal128>> = model("Account", AccountSchema);
-
-export default AccountModel;
+export default model<AccountDocument, AccountModel>("Account", AccountSchema);

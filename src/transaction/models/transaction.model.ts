@@ -1,9 +1,10 @@
-import { Schema, model, Model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import transactionType from '../enums/transaction-type.enum';
 import schemaGetAmount from '../../common/helpers/schema-get-amount';
-import Transaction from '../interfaces/transaction';
+import TransactionModel from '../interfaces/transaction-model.interface';
+import TransactionDocument from '../interfaces/transaction-document.interface';
 
-const TransactionSchema: Schema<Transaction<Schema.Types.Decimal128>>
+const TransactionSchema: Schema<TransactionDocument, TransactionModel>
     = new Schema(
         {
             userEmail: {
@@ -48,7 +49,4 @@ TransactionSchema.virtual(
     },
 );
 
-const TransactionModel: Model<Transaction<Schema.Types.Decimal128>>
-    = model<Transaction<Schema.Types.Decimal128>>('Transaction', TransactionSchema);
-
-export default TransactionModel;
+export default model<TransactionDocument, TransactionModel>('Transaction', TransactionSchema);

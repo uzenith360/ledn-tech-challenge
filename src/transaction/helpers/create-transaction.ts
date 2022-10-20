@@ -1,6 +1,6 @@
 import { ClientSession } from 'mongoose';
 import AccountCoreService from '../../account/account.core.service';
-import Account from '../../account/interfaces/account';
+import AccountDocument from '../../account/interfaces/account-document.inteface';
 import HttpException from '../../common/classes/http-exception';
 import httpStatusCode from '../../common/enums/http-status-code.enum';
 import runInTransaction from '../../common/helpers/run-in-transaction';
@@ -16,7 +16,7 @@ export default async (transactionCreateData: TransactionCreateData, type: transa
                     amount,
                     userEmail,
                 } = transactionCreateData;
-                const account: Account | null
+                const account: AccountDocument | null
                     = await AccountCoreService.get(
                         {
                             userEmail,
@@ -52,7 +52,7 @@ export default async (transactionCreateData: TransactionCreateData, type: transa
                     incrementAmount,
                     session,
                     true,
-                );
+                ) as AccountDocument;
 
                 if (balance === account.balance) {
                     throw new HttpException(

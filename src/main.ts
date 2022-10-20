@@ -2,7 +2,6 @@
  * Required External Modules
  */
 import express, { Express } from "express";
-import { Schema } from 'mongoose';
 import { env } from 'process';
 import cors from "cors";
 import helmet from "helmet";
@@ -18,10 +17,12 @@ import DBConnection from "./common/helpers/db-connection";
 import dbSeeder from "./common/helpers/db-seeder";
 import TransactionModel from "./transaction/models/transaction.model";
 import AccountModel from "./account/models/account.model";
-import Account from "./account/interfaces/account";
-import Transaction from "./transaction/interfaces/transaction";
+import Account from "./account/interfaces/account.interface";
+import Transaction from "./transaction/interfaces/transaction.interface";
 import accountRouter from "./account/account.router";
 import trimAndLowercase from "./common/helpers/trim-and-lowercase";
+import TransactionDocument from "./transaction/interfaces/transaction-document.interface";
+import AccountDocument from "./account/interfaces/account-document.inteface";
 
 /**
 * App Variables
@@ -94,13 +95,13 @@ const init = async () => {
             await Promise.allSettled(
                 [
                     // transaction model
-                    dbSeeder<Transaction<Schema.Types.Decimal128>, Transaction>(
+                    dbSeeder<TransactionDocument, Transaction>(
                         TransactionModel,
                         './instructions/transactions-api.json',
                         (transaction: Transaction)=>({...transaction, userEmail: trimAndLowercase(transaction.userEmail)}),
                     ),
                     // account model
-                    dbSeeder<Account<Schema.Types.Decimal128>, Account>(
+                    dbSeeder<AccountDocument, Account>(
                         AccountModel,
                         './instructions/accounts-api.json',
                         (account: Account)=>({...account, userEmail: trimAndLowercase(account.userEmail)}),

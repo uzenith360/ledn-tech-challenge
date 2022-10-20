@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import HttpException from '../common/classes/http-exception';
 import httpStatusCode from '../common/enums/http-status-code.enum';
 import AccountService from './account.service';
-import Account from './interfaces/account';
+import AccountDocument from './interfaces/account-document.inteface';
 import GetAccountData from './types/get-account-data.type';
 
 export const getAccount = async (req: Request, res: Response) => {
@@ -11,7 +11,7 @@ export const getAccount = async (req: Request, res: Response) => {
     } = req.query as GetAccountData;
 
     try {
-        const account: Account = await AccountService.getAccountByEmail(userEmail);
+        const account: AccountDocument = await AccountService.getAccountByEmail(userEmail);
 
         res.send({ success: true, data: account });
     } catch (err) {

@@ -1,4 +1,4 @@
-import Account from "../interfaces/account";
+import Account from "../interfaces/account.interface";
 
 type GetAccountData = Pick<Account, 'userEmail'>;
 

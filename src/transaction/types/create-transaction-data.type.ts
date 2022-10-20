@@ -1,4 +1,4 @@
-import Transaction from "../interfaces/transaction";
+import Transaction from "../interfaces/transaction.interface";
 
 type CreateTransactionData = Pick<Transaction, 'amount' | 'userEmail'>;
 

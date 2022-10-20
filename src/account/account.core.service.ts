@@ -1,11 +1,11 @@
-import { HydratedDocument, FilterQuery, UpdateQuery, UpdateWithAggregationPipeline, ClientSession } from 'mongoose';
-import Account from './interfaces/account';
-import AccountDocument from './models/account.document';
+import { FilterQuery, UpdateQuery, UpdateWithAggregationPipeline, ClientSession } from 'mongoose';
+import AccountDocument from './interfaces/account-document.inteface';
+import Account from './interfaces/account.interface';
 import AccountModel from "./models/account.model";
 
 export default class AccountCoreService {
-    static async get(filter?: FilterQuery<Account>): Promise<Account | null> {
-        return AccountModel.findOne(filter).lean(false);
+    static async get(filter?: FilterQuery<Account>): Promise<AccountDocument | null> {
+        return AccountModel.findOne(filter);
     }
 
     static async create(account: Account): Promise<AccountDocument> {
@@ -25,7 +25,7 @@ export default class AccountCoreService {
         update: UpdateQuery<Account> | UpdateWithAggregationPipeline,
         session?: ClientSession,
         returnUpdatedDocument?: boolean
-    ): Promise<Account> {
+    ): Promise<AccountDocument | null> {
         return AccountModel.findOneAndUpdate(
             filter,
             update,
@@ -33,7 +33,7 @@ export default class AccountCoreService {
                 session,
                 new: returnUpdatedDocument,
             }
-        ).lean(false);
+        );
     }
 
     static incrementBalance(
@@ -41,7 +41,7 @@ export default class AccountCoreService {
         increment: number,
         session?: ClientSession,
         returnUpdatedDocument?: boolean
-    ): Promise<Account> {
+    ): Promise<AccountDocument | null> {
         return AccountCoreService.findOneAndUpdate(
             filter,
             [
