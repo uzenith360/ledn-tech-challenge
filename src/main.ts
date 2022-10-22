@@ -13,7 +13,7 @@ import notFoundHandler from "./common/middlewares/not-found.middleware";
 import defaultHandler from "./common/middlewares/default.middleware";
 import getApiSecretMiddleware from "./common/middlewares/get-api-secret.middleware";
 import transactionRouter from "./transaction/transaction.router";
-import DBConnection from "./common/helpers/db-connection";
+import MongooseDBConnection from "./common/helpers/mongoose-db-connection";
 import dbSeeder from "./common/helpers/db-seeder";
 import TransactionModel from "./transaction/models/transaction.model";
 import AccountModel from "./account/models/account.model";
@@ -44,7 +44,7 @@ const SEED_DATABASE: boolean = env.SEED_DATABASE === 'true';
 const PORT: number = parseInt(env.PORT as string, 10) || 8081;
 const MONGO_URL: string = env.MONGODB_CONNECTION_STRING as string;
 
-const init = async () => {
+(async () => {
     const app: Express = express();
 
     /**
@@ -79,11 +79,12 @@ const init = async () => {
     app.use(errorHandler);
     app.use(notFoundHandler);
 
-    /**
-     * Mongoose connection
-     */
     try {
-        await DBConnection.getInstance(MONGO_URL).getConnection();
+        // We're using MongoDB
+        /**
+         * Mongoose connection
+         */
+        await MongooseDBConnection.getInstance(MONGO_URL).getConnection();
 
         console.log('DB connected');
 
@@ -94,17 +95,18 @@ const init = async () => {
             /// seed database 
             await Promise.allSettled(
                 [
+                    // Pass database dependency into this fn
                     // transaction model
                     dbSeeder<TransactionDocument, Transaction>(
                         TransactionModel,
                         './instructions/transactions-api.json',
-                        (transaction: Transaction)=>({...transaction, userEmail: trimAndLowercase(transaction.userEmail)}),
+                        (transaction: Transaction) => ({ ...transaction, userEmail: trimAndLowercase(transaction.userEmail) }),
                     ),
                     // account model
                     dbSeeder<AccountDocument, Account>(
                         AccountModel,
                         './instructions/accounts-api.json',
-                        (account: Account)=>({...account, userEmail: trimAndLowercase(account.userEmail)}),
+                        (account: Account) => ({ ...account, userEmail: trimAndLowercase(account.userEmail) }),
                     ),
                 ],
             );
@@ -124,14 +126,12 @@ const init = async () => {
             console.log(`Listening on port ${PORT}`);
         },
     );
-}
-
-init();
+})();
 
 process.on(
     'beforeExit',
     async () => {
-        await DBConnection.getInstance(MONGO_URL).closeConnection();
+        await MongooseDBConnection.getInstance(MONGO_URL).closeConnection();
 
         process.exit(0);
     },

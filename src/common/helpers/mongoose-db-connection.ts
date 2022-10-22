@@ -1,7 +1,7 @@
 import { Connection, connect } from "mongoose";
 
-export default class DBConnection {
-    private static _instance: DBConnection;
+export default class MongooseDBConnection {
+    private static _instance: MongooseDBConnection;
 
     private readonly mongoUrl: string;
     private connection: Connection | undefined;
@@ -42,11 +42,11 @@ export default class DBConnection {
         return connection;
     }
 
-    public static getInstance(mongoUrl: string): DBConnection {
-        if (!DBConnection._instance) {
-            DBConnection._instance = new DBConnection(mongoUrl);
+    public static getInstance(mongoUrl: string): MongooseDBConnection {
+        if (!MongooseDBConnection._instance) {
+            MongooseDBConnection._instance = new MongooseDBConnection(mongoUrl);
         }
 
-        return DBConnection._instance;
+        return MongooseDBConnection._instance;
     }
 }

@@ -1,18 +1,28 @@
 import { FilterQuery, UpdateQuery, UpdateWithAggregationPipeline, ClientSession } from 'mongoose';
+import AccountCoreService from './interfaces/account.core.service.interface';
 import AccountDocument from './interfaces/account-document.inteface';
 import Account from './interfaces/account.interface';
 import AccountModel from "./models/account.model";
+import AccountMongodbCoreService from './account-mongodb.core.service';
 
-export default class AccountCoreService {
-    static async get(filter?: FilterQuery<Account>): Promise<AccountDocument | null> {
+export default class AccountCoreServiceImpl implements AccountCoreService {
+    
+
+    constructor(private accountCoreServiceImpl: AccountCoreService){
+
+
+this.accountCoreServiceImpl.updateOne();
+    }
+
+     async get(filter?: FilterQuery<Account>): Promise<AccountDocument | null> {
         return AccountModel.findOne(filter);
     }
 
-    static async create(account: Account): Promise<AccountDocument> {
+     async create(account: Account): Promise<AccountDocument> {
         return (new AccountModel(account)).save();
     }
 
-    static async updateOne(
+     async updateOne(
         filter: FilterQuery<Account>,
         update: UpdateQuery<Account> | UpdateWithAggregationPipeline,
         session?: ClientSession
@@ -20,7 +30,7 @@ export default class AccountCoreService {
         return !!(await AccountModel.updateOne(filter, update, { session })).modifiedCount;
     }
 
-    static async findOneAndUpdate(
+     async findOneAndUpdate(
         filter: FilterQuery<Account>,
         update: UpdateQuery<Account> | UpdateWithAggregationPipeline,
         session?: ClientSession,
@@ -36,7 +46,7 @@ export default class AccountCoreService {
         );
     }
 
-    static incrementBalance(
+     incrementBalance(
         filter: FilterQuery<Account>,
         increment: number,
         session?: ClientSession,
