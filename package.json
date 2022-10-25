@@ -6,6 +6,7 @@
   "scripts": {
     "test": "DOTENV_CONFIG_PATH=./.env  jest --watchAll --collectCoverage --detectOpenHandles --setupFiles=dotenv/config",
     "start": "npm run build && node -r dotenv/config ./dist/main.js dotenv_config_path=./.env",
+    "pretest": "jest --collectCoverage --setupFiles=dotenv/config",
     "build": "tsc -p .",
     "dev": "ts-node-dev --respawn --pretty --transpile-only -r dotenv/config src/main.ts dotenv_config_path=./.env"
   },
