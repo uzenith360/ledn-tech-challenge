@@ -5,11 +5,11 @@ import AccountModel from './models/account.model';
 
 export default class AccountDatasourceImpl implements AccountDatasource {
     async get(filter?: FilterQuery<Account>): Promise<Account | null> {
-        return AccountModel.findOne(filter).lean(false);
+        return AccountModel.findOne(filter).lean({getters: true});
     }
 
     async create(account: Account): Promise<Account> {
-        return (await (new AccountModel(account)).save()).toObject();
+        return (await (new AccountModel(account)).save()).toObject({getters: true});
     }
 
     async updateOne(
@@ -33,7 +33,7 @@ export default class AccountDatasourceImpl implements AccountDatasource {
                 session,
                 new: returnUpdatedDocument,
             }
-        ).lean(false);
+        ).lean({getters: true});
     }
 
     incrementBalance(

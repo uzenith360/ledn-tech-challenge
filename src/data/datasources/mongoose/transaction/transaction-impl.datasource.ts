@@ -3,10 +3,6 @@ import TransactionWithAccount from "../../../../domain/transaction/interfaces/tr
 import TransactionDatasource from "../../../interfaces/transaction/transaction.datasource.interface";
 import Transaction from "../../../../domain/transaction/interfaces/transaction.interface";
 import TransactionModel from "./models/transaction.model";
-import HttpException from "../../../../common/classes/http-exception";
-import httpStatusCode from "../../../../common/enums/http-status-code.enum";
-import transactionType from "../../../../domain/transaction/enums/transaction-type.enum";
-import AccountDocument from "../../../interfaces/account/mongoose/account-document.inteface";
 import TransactionDocument from "../../../interfaces/transaction/mongoose/transaction-document.interface";
 
 export default class TransactionDatasourceImpl implements TransactionDatasource {
@@ -15,16 +11,16 @@ export default class TransactionDatasourceImpl implements TransactionDatasource 
             .findOne({ userEmail })
             // if you use select() be sure to include the foreign key field !
             .populate('accountOwner')
-            .lean(false);
+            .lean({ getters: true });
     }
 
     private async _create(transaction: Transaction, session?: ClientSession)
-    : Promise<TransactionDocument | null> {
-    return (new TransactionModel(transaction)).save({ session });
-}
+        : Promise<TransactionDocument> {
+        return (new TransactionModel(transaction)).save({ session });
+    }
 
     async create(transaction: Transaction): Promise<Transaction | null> {
-        return (await (new TransactionModel(transaction)).save()).toObject();
+        return (await this._create(transaction)).toObject({ getters: true });
     }
 
     // async createTransaction (transaction: Transaction): Promise<void> {
@@ -41,14 +37,14 @@ export default class TransactionDatasourceImpl implements TransactionDatasource 
     //                             userEmail,
     //                         },
     //                     );
-    
+
     //                 if (!account) {
     //                     throw new HttpException(
     //                         httpStatusCode.notFound,
     //                         `Account with email ${userEmail} doesnt exist`,
     //                     );
     //                 }
-    
+
     //                 await this._create(
     //                     {
     //                         type,
@@ -57,7 +53,7 @@ export default class TransactionDatasourceImpl implements TransactionDatasource 
     //                     },
     //                     session,
     //                 );
-    
+
     //                 const incrementAmount: number
     //                     = amount
     //                     * (
@@ -65,26 +61,24 @@ export default class TransactionDatasourceImpl implements TransactionDatasource 
     //                             ? 1
     //                             : -1
     //                     );
-    
+
     //                 const { balance = null } = await AccountCoreService.incrementBalance(
     //                     { _id: account._id },
     //                     incrementAmount,
     //                     session,
     //                     true,
     //                 ) as AccountDocument;
-    
+
     //                 if (balance === account.balance) {
     //                     throw new HttpException(
     //                         httpStatusCode.bad,
     //                         'Insufficient balance 🤦‍♂️',
     //                     );
     //                 }
-    
+
     //                 resolve();
     //             }
     //         ).catch((e) => reject(e))
     //     );    
     // }
 }
-
-
