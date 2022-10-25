@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import mongooseLeanGetters from 'mongoose-lean-getters';
 import transactionType from '../../../../../domain/transaction/enums/transaction-type.enum';
 import TransactionDocument from '../../../../interfaces/transaction/mongoose/transaction-document.interface';
 import TransactionModelInterface from '../../../../interfaces/transaction/mongoose/transaction-model.interface';
@@ -37,6 +38,9 @@ const TransactionSchema: Schema<TransactionDocument, TransactionModelInterface>
             toObject: { virtuals: true },
         },
     );
+
+// Add this plugin to apply getters when using `lean()`.
+TransactionSchema.plugin(mongooseLeanGetters);
 
 // Foreign keys definitions
 TransactionSchema.virtual(

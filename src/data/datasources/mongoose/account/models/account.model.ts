@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import mongooseLeanGetters from 'mongoose-lean-getters';
 import AccountDocument from "../../../../interfaces/account/mongoose/account-document.inteface";
 import AccountModelInterface from "../../../../interfaces/account/mongoose/account-model.interface";
 import schemaGetAmount from "../../schema-get-amount";
@@ -27,6 +28,9 @@ const AccountSchema: Schema<AccountDocument, AccountModelInterface>
             toJSON: { getters: true },
         },
     );
+
+// Add this plugin to apply getters when using `lean()`.
+AccountSchema.plugin(mongooseLeanGetters);
 
 const AccountModel: AccountModelInterface
     = model<AccountDocument, AccountModelInterface>("Account", AccountSchema);
