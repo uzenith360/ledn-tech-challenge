@@ -40,7 +40,7 @@ if (
     process.exit(1);
 }
 
-const SEED_DATABASE: boolean = env.SEED_DATABASE === 'true';
+// const SEED_DATABASE: boolean = env.SEED_DATABASE === 'true';
 const PORT: number = parseInt(env.PORT as string, 10) || 8081;
 const MONGO_URL: string = env.MONGODB_CONNECTION_STRING as string;
 
